@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant First Page</title>
+    <style>
+      :root {
+        --primary-color: #0e4c5b;
+        --secondary-color: #8c8888;
+        --text-color: #333;
+        --light-text-color: #fff;
+        --accent-color: #f9f9f9;
+        --border-color: #ccc;
+        --hover-shadow: rgba(255, 255, 255, 0.58);
+      }
+
+      /* Base Styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        background: var(--secondary-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* Navbar */
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        padding: 0 20px;
+      }
+
+      .navbar-links {
+        display: flex;
+        align-items: center;
+        background-color: var(--primary-color);
+        border-bottom: 4px;
+      }
+
+      .navbar a {
+        color: var(--light-text-color);
+        padding: 14px 20px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: medium;
+      }
+
+      .navbar a:hover {
+        border-bottom: var(--light-text-color) solid 0.15px;
+        border-radius: 4px;
+        box-shadow: 5px -50px 59px -3px var(--hover-shadow);
+      }
+
+      .navbar-logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-logo img {
+        height: 40px;
+        border-radius: 3px;
+      }
+
+      /* Hamburger Menu */
+      .hamburger-menu {
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+        z-index: 1001;
+      }
+
+      .hamburger-menu .bar {
+        width: 100%;
+        height: 3px;
+        background-color: var(--light-text-color);
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Mobile Navbar Adjustment */
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 12px 0;
+        }
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          width: 20%;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          background-color: var(--primary-color);
+          border-radius: 4px;
+          padding: 10px 0;
+          transition: transform 0.3s ease-in-out;
+          transform: translateY(-100%);
+        }
+
+        .navbar-links.active {
+          display: flex;
+          transform: translateY(0);
+        }
+
+        .navbar-links a {
+          width: 100%;
+          padding: 10px 20px;
+          text-align: center;
+          border-bottom: 1px solid #ffffff33;
+        }
+
+        .navbar-links a:last-child {
+          border-bottom: none;
+        }
+
+        .hamburger-menu {
+          display: flex;
+        }
+
+        .navbar-logo {
+          order: 1;
+          margin-right: auto;
+          position: absolute;
+          right: 20px;
+        }
+      }
+
+      /* Main Content */
+      .content {
+        position: relative;
+        width: 100%;
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .main-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      /* Dynamic Text Overlay */
+      .main-text-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(14, 76, 91, 0.7);
+        color: var(--light-text-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        z-index: 2;
+      }
+
+      .main-text-overlay.active {
+        opacity: 1;
+      }
+
+      .main-text-overlay h2 {
+        font-size: 2em;
+        margin: 0;
+      }
+
+      .main-text-overlay p {
+        font-size: 1.2em;
+        margin-top: 10px;
+        color: var(--light-text-color);
+      }
+
+      /* Footer */
+      footer {
+        text-align: left;
+        font-size: small;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 1000;
+        overflow: hidden;
+        margin: 0;
+        padding: 10px 20px;
+      }
+
+      footer p {
+        color: var(--light-text-color);
+      }
+
+      footer .footer-links {
+        display: flex;
+        gap: 15px;
+        cursor: pointer;
+      }
+
+      footer .footer-links a {
+        color: var(--light-text-color);
+        text-decoration: none;
+        font-size: small;
+        transition: color 0.3s;
+      }
+
+      footer .footer-links a:hover {
+        color: var(--primary-color);
+      }
+
+      /* Social media icons in the footer */
+      .social-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-links a img {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s ease;
+      }
+
+      .social-links a img:hover {
+        transform: scale(1.2);
+      }
+
+      /* Media query for mobile to stack social links */
+      @media (max-width: 768px) {
+        footer {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 10px;
+        }
+        .footer-links,
+        .social-links {
+          justify-content: center;
+        }
+      }
+
+      /* Modals */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(114, 107, 107, 1);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        margin: auto;
+      }
+
+      .modal-content {
+        background-color: rgba(0, 0, 0, 0.1);
+        padding: 20px 20px 40px 20px;
+        border-radius: 4px;
+        max-width: 500px;
+        width: 100%;
+        position: relative;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(224, 222, 222, 0.3);
+        overflow: hidden;
+      }
+
+      #menuModal > div,
+      #galleryModal > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+      }
+
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 22px;
+        cursor: pointer;
+      }
+
+      .modal .close:hover {
+        color: var(--light-text-color);
+      }
+
+      /* Slider */
+      .slider {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px 0;
+        scroll-snap-type: x proximity;
+      }
+
+      .slider img {
+        flex: 0 0 auto;
+        height: 90%;
+        width: 90%;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        scroll-snap-align: start;
+      }
+
+      .slider img:hover {
+        transform: scale(1.05);
+      }
+
+      /* Forms */
+      .form-group {
+        margin-bottom: 12px;
+        text-align: left;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 4px;
+        padding-left: 20px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group button {
+        width: 90%;
+        padding: 8px;
+        border: 0.5px solid var(--light-text-color);
+        border-radius: 4px;
+        margin: auto;
+        display: block;
+      }
+
+      .btn {
+        background: transparent;
+        width: fit-content;
+        color: var(--text-color);
+        cursor: pointer;
+        padding: 10px;
+        margin-top: 10px;
+        border: #333 solid 0.15px;
+        border-radius: 4px;
+      }
+
+      .btn:hover {
+        background-color: var(--light-text-color);
+        box-shadow: 3px -6px 100px -1px var(--light-text-color);
+        border: transparent;
+      }
+
+      /* Payment options */
+      .payment-options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: stretch;
+        margin-top: 20px;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .payment-option {
+        flex: 1;
+        text-align: center;
+        padding: 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        background: var(--accent-color);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .payment-option:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .payment-option img {
+        max-width: 60px;
+        margin-bottom: 10px;
+      }
+
+      #paymentMethod {
+        width: 90%;
+      }
+
+      #paymentModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(114, 107, 107);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        overflow: hidden;
+      }
+
+      /* Carousel */
+      .carousel {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        overflow: hidden;
+      }
+
+      .slides {
+        display: flex;
+        transition: transform 1s ease-in-out;
+      }
+
+      .slide {
+        flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .slide img {
+        border-radius: 10px;
+      }
+
+      .carousel img {
+        width: 100%;
+        max-height: 600px;
+        object-fit: contain;
+        cursor: pointer;
+      }
+
+      .carousel .prev,
+      .carousel .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.4);
+        color: var(--light-text-color);
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+      }
+
+      .carousel .prev {
+        left: 10px;
+      }
+
+      .carousel .next {
+        right: 10px;
+      }
+
+      /* A shared style for all sections */
+      .story-section,
+      .booking-section,
+      .reviews-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        padding: 40px 20px;
+        flex-wrap: wrap;
+      }
+
+      .story-section > div,
+      .booking-section > div {
+        flex: 1;
+        font-size: 18px;
+        line-height: 1.6;
+        margin: 0 10px;
+      }
+
+      .story-section img,
+      .booking-section img {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s;
+      }
+
+      .story-section img:hover,
+      .booking-section img:hover {
+        transform: scale(1.05);
+      }
+
+      /* reviews */
+
+      .reviews .review {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+
+      .reviews .review.active {
+        display: block;
+        opacity: 1;
+      }
+
+      /* Intro text */
+      .reviews-intro {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .reviews-intro p {
+        text-align: left;
+        font-size: 1.2em;
+        margin-top: 10px;
+      }
+
+      .reviews-intro h2 {
+        text-align: left;
+        font-size: 2em;
+      }
+
+      /* Review chat style */
+      /* Review chatbox container */
+      .reviews {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        gap: 15px;
+        max-width: 400px;
+        margin: auto;
+        font-size: 16px;
+        line-height: 1.4;
+        border-top: var(--text-color) solid 2px;
+        border-left: var(--text-color) solid 2px;
+        border-right: var(--text-color) solid 2px;
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text-color);
+      }
+
+      /* Shared bubble */
+      .reviews .message {
+        max-width: 70%;
+        padding: 12px 18px;
+        border-radius: 16px;
+        position: relative;
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      /* Show bubble */
+      .reviews .message.show {
+        opacity: 0.75;
+        transform: translateY(0);
+      }
+
+      /* Customer bubble */
+      .reviews .customer {
+        align-self: flex-start;
+        background-color: #f1f1f1;
+        font-size: bold;
+        color: #333;
+        border-bottom-left-radius: 1px;
+      }
+
+      /* Restaurant bubble */
+      .reviews .restaurant {
+        align-self: flex-end;
+        background-color: var(--primary-color);
+        color: var(--light-text-color);
+        border-bottom-right-radius: 4px;
+      }
+
+      p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: var(--text-color);
+        margin: 10px 0;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <div class="hamburger-menu" onclick="toggleMobileMenu()">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <div class="navbar-links">
+          <a onclick="openModal('contactModal')">Contact</a>
+          <a onclick="openModal('infoModal')">Info</a>
+          <a onclick="openModal('galleryModal')">Gallery</a>
+          <a onclick="openModal('menuModal')">Menu</a>
+          <a onclick="openModal('reserveModal')">Reservation</a>
+          <a onclick="openModal('voucherModal')">Voucher</a>
+        </div>
+        <div class="navbar-logo">
+          <img src="./imgs/logoblack.png" alt="Logo" />
+        </div>
+      </div>
+
+      <div class="content">
+        <img
+          src="./imgs/restaurant1.jpg"
+          class="main-image"
+          alt="Restaurant Interior"
+        />
+        <div class="main-text-overlay active">
+          <h2>Welcome to our Restaurant!</h2>
+          <p>
+            We offer delicious meals made from fresh ingredients. Our chefs
+            bring passion and creativity to every dish.
+          </p>
+        </div>
+      </div>
+
+      <div class="story-section">
+        <div class="story-image">
+          <img src="./imgs/mapig.png" alt="Our Restaurant Journey" />
+        </div>
+        <div class="story-text">
+          <h2>Our Story</h2>
+          <p>
+            Four years ago, we started our journey in this beautiful town with a
+            small dream: to bring the true taste of Italy to our community.
+          </p>
+          <p>
+            The first years were not always easy, we went through tough times,
+            working day and night, learning, improving, and listening to our
+            guests.
+          </p>
+          <p>
+            Today, we are proud to be known as one of the best Italian
+            restaurants around. With fresh ingredients, authentic recipes, and a
+            passion for hospitality, we continue to create unforgettable moments
+            for our guests.
+          </p>
+          <p><strong>Thank you for being part of our story </strong></p>
+        </div>
+      </div>
+
+      <div class="booking-section">
+        <div class="booking-left">
+          <div class="carousel" id="bookingCarousel">
+            <div class="slides" class="">
+              <div class="slide">
+                <img src="./imgs/restaurant3.jpg" alt="Restaurant Interior" />
+              </div>
+              <div class="slide">
+                <img src="./imgs/restaurant2.jpg" alt="Restaurant Interior" />
+              </div>
+              <div class="slide">
+                <img src="./imgs/restaurant1.jpg" alt="Table Setup" />
+              </div>
+            </div>
+            <button class="prev" onclick="moveSlide('bookingCarousel', -1)">
+              &#10094;
+            </button>
+            <button class="next" onclick="moveSlide('bookingCarousel', 1)">
+              &#10095;
+            </button>
+          </div>
+        </div>
+
+        <div class="booking-right">
+          <p>Celebrate your special moments with us</p>
+          <h2>The perfect place for your parties and events</h2>
+          <p>
+            Planning a family celebration or a business dinner and want to
+            reserve a table? Book your reservation online quickly and easily.
+          </p>
+          <p>Our team will contact you shortly to confirm your booking</p>
+          <button class="btn" onclick="openModal('reserveModal')">
+            Reserve Now
+          </button>
+        </div>
+      </div>
+
+      <div class="reviews-section">
+        <!-- Left: intro paragraph -->
+        <div class="reviews-intro">
+          <h2>What Our Guests Say</h2>
+          <p>
+            We do everything to satisfy our customers, and we are always open to
+            every new opinion and suggestion. Your feedback helps us grow and
+            serve you better every day.
+          </p>
+          <p>
+            At our restaurant, every guest is like family, and your happiness is
+            our greatest motivation. We put our heart into every dish, every
+            smile, and every detail, because nothing matters more to us than
+            knowing you leave satisfied.
+          </p>
+          <p>
+            We welcome every opinion and suggestion, as your feedback inspires
+            us to grow, improve, and create even more memorable experiences for
+            you and your loved ones.
+          </p>
+        </div>
+
+        <!-- Right: chatterbox -->
+        <div class="reviews">
+          <div class="message customer">
+            "Amazing food and cozy atmosphere!" – Anna
+          </div>
+          <div class="message restaurant">
+            "Thank you Anna! We’re happy you enjoyed the atmosphere. 🍷"
+          </div>
+          <div class="message customer">
+            "The pasta was delicious, will come again." – Max
+          </div>
+          <div class="message restaurant">
+            "Grazie Max! Our chef will be thrilled to hear that. 🍝"
+          </div>
+          <div class="message customer">
+            "Fresh ingredients and creative dishes." – Laura
+          </div>
+          <div class="message restaurant">
+            "We always use fresh produce, Laura. Thank you! 🥗"
+          </div>
+          <!-- <div class="message customer">
+            "Perfect for family dinners and celebrations." – Sophia
+          </div>
+          <div class="message restaurant">
+            "Sophia, we’re glad your family felt at home here. ❤️"
+          </div> -->
+        </div>
+      </div>
+
+      <footer>
+        <footer>
+          <p>
+            &copy; 2025 My Restaurant. All rights reserved. | Designed by Yali.
+          </p>
+          <div class="footer-links">
+            <a data-modal="termsModal">Terms & Conditions</a>
+            <a data-modal="impressumModal">Legal Notice</a>
+            <a data-modal="privacyModal">Privacy Policy</a>
+            <a data-modal="accessibilityModal">Accessibility</a>
+          </div>
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/your-profile-name/"
+              aria-label="Instagram"
+              target="_blank"
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new--v1.png"
+                alt="Instagram"
+              />
+            </a>
+
+            <a
+              href="https://www.facebook.com/your-profile-name/"
+              aria-label="Facebook"
+              target="_blank"
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png"
+                alt="Facebook"
+              />
+            </a>
+
+            <a
+              href="https://www.youtube.com/your-channel/"
+              aria-label="YouTube"
+              target="_blank"
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play--v1.png"
+                alt="YouTube"
+              />
+            </a>
+          </div>
+        </footer>
+      </footer>
+
+      <div
+        id="contactModal"
+        class="modal"
+        onclick="closeOutside(event, 'contactModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('contactModal')"
+            >&times;</span
+          >
+          <h2>Contact</h2>
+          <p>
+            Phone: +49 123 456789<br />Email: info@myrestaurant.com <br />
+            Street one. seaside ave.
+          </p>
+        </div>
+      </div>
+
+      <div
+        id="infoModal"
+        class="modal"
+        onclick="closeOutside(event, 'infoModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('infoModal')">&times;</span>
+          <h2>Info</h2>
+
+          <p>
+            🕒 <strong>Opening Hours:</strong><br />
+            We are open every day from <strong>11:00 to 23:00</strong>. Visit us
+            for lunch, dinner, or drinks!
+          </p>
+
+          <hr style="margin: 15px; border: 0; border-top: 1px solid #555" />
+
+          <p>
+            💳 <strong>Payment Methods:</strong><br />
+            cash & credit card are accepted.
+          </p>
+
+          <hr style="margin: 15px; border: 0; border-top: 1px solid #555" />
+
+          <p>
+            ✨ <strong>Join Our Team!</strong><br />
+            Are you motivated and love working in hospitality? We are always
+            looking for enthusiastic people. Become part of our open and
+            friendly team! contact us today!
+          </p>
+
+          <button
+            class="btn"
+            onclick="closeModal('infoModal'); openModal('contactModal');"
+          >
+            Contact Us
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="menuModal"
+        class="modal"
+        onclick="closeOutside(event, 'menuModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('menuModal')">&times;</span>
+          <h2>Menu</h2>
+          <div class="carousel" id="menuCarousel">
+            <div class="slides">
+              <div class="slide">
+                <img
+                  src="./imgs/menu/printversion_p1.png"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/menu/printversion_p2.png"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/menu/printversion_p3.png"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/menu/printversion_p4.png"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/menu/printversion_p5.png"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+            </div>
+            <button class="prev" onclick="moveSlide('menuCarousel', -1)">
+              &#10094;
+            </button>
+            <button class="next" onclick="moveSlide('menuCarousel', 1)">
+              &#10095;
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="galleryModal"
+        class="modal"
+        onclick="closeOutside(event, 'galleryModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('galleryModal')"
+            >&times;</span
+          >
+          <h2>Gallery</h2>
+          <div class="carousel" id="galleryCarousel">
+            <div class="slides">
+              <div class="slide">
+                <img
+                  src="./imgs/gallery/_133eec5b-df8f-4d41-abfd-07b4405f6937.jpeg"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/gallery/meal1.jpeg"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/gallery/meal2.jpeg"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/gallery/MOJITO.jpg"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+              <div class="slide">
+                <img
+                  src="./imgs/gallery/Strawberry Mojito .png"
+                  onclick="openImage(this.src)"
+                />
+              </div>
+            </div>
+            <button class="prev" onclick="moveSlide('galleryCarousel', -1)">
+              &#10094;
+            </button>
+            <button class="next" onclick="moveSlide('galleryCarousel', 1)">
+              &#10095;
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="reserveModal"
+        class="modal"
+        onclick="closeOutside(event, 'reserveModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('reserveModal')"
+            >&times;</span
+          >
+          <h2>Reserve a Table</h2>
+          <form id="reserveForm">
+            <div class="form-group">
+              <label>Name:</label>
+              <input
+                type="text"
+                id="resName"
+                placeholder="Your Name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Phone:</label>
+              <input
+                type="tel"
+                id="resPhone"
+                placeholder="+1 123 456 7890"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Date:</label>
+              <input
+                type="date"
+                id="resDate"
+                placeholder="MM/DD/YYYY"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Time:</label>
+              <input type="time" id="resTime" placeholder="--:--" required />
+            </div>
+            <div class="form-group">
+              <label>Number of People:</label>
+              <input
+                type="number"
+                id="resPeople"
+                min="1"
+                max="60"
+                placeholder="Max 60"
+                required
+              />
+            </div>
+            <button type="submit" class="btn">Submit</button>
+          </form>
+          <div
+            id="reserveConfirmation"
+            style="display: none; text-align: center; margin-top: 20px"
+          ></div>
+        </div>
+      </div>
+      <div
+        id="voucherModal"
+        class="modal"
+        onclick="closeOutside(event, 'voucherModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('voucherModal')"
+            >&times;</span
+          >
+          <h2>Order a Voucher</h2>
+          <form id="voucherForm">
+            <div class="form-group">
+              <label>From:</label><input type="text" required />
+            </div>
+            <div class="form-group">
+              <label>To:</label><input type="text" required />
+            </div>
+            <div class="form-group">
+              <label>Amount (€):</label
+              ><input type="number" required min="30" placeholder="Min. 30€" />
+            </div>
+            <div class="form-group">
+              <label>Phone:</label><input type="tel" required />
+            </div>
+            <div class="form-group">
+              <label>Email:</label><input type="email" required />
+            </div>
+            <div class="form-group">
+              <label>Payment Method:</label>
+              <select id="paymentMethod" required>
+                <option value="">-- Select --</option>
+                <option value="online">Pay Online</option>
+                <option value="pickup">Pay at Pickup</option>
+              </select>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div
+        id="paymentModal"
+        class="modal"
+        onclick="closeOutside(event, 'paymentModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('paymentModal')"
+            >&times;</span
+          >
+          <h2>Select Payment Method</h2>
+          <div class="payment-options">
+            <div
+              class="payment-option"
+              onclick="finishPayment('Bank Transfer')"
+            >
+              <img
+                src="https://img.icons8.com/color/96/bank-building.png"
+                alt="Bank"
+              />
+              <span>Bank Transfer</span>
+            </div>
+            <div class="payment-option" onclick="finishPayment('PayPal')">
+              <img
+                src="https://img.icons8.com/color/96/paypal.png"
+                alt="PayPal"
+              />
+              <span>PayPal</span>
+            </div>
+            <div class="payment-option" onclick="finishPayment('ApplePay')">
+              <img
+                src="https://img.icons8.com/color/96/apple-pay.png"
+                alt="Apple Pay"
+              />
+              <span>Apple Pay</span>
+            </div>
+            <div class="payment-option" onclick="finishPayment('GooglePay')">
+              <img
+                src="https://img.icons8.com/color/96/google-pay.png"
+                alt="Google Pay"
+              />
+              <span>Google Pay</span>
+            </div>
+            <div class="payment-option" onclick="finishPayment('Mastercard')">
+              <img
+                src="https://img.icons8.com/color/96/mastercard-logo.png"
+                alt="Mastercard"
+              />
+              <span>Mastercard</span>
+            </div>
+            <div
+              id="googlePayBtn"
+              class="payment-option"
+              role="button"
+              tabindex="0"
+              aria-label="Google Pay"
+              onclick="finishPayment('Google Pay')"
+              onkeydown="handleKey(event,'Google Pay')"
+            >
+              <img
+                src="https://img.icons8.com/color/96/google-pay-india.png"
+                alt="Google Pay"
+              />
+              <span>Google Pay</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="termsModal"
+        class="modal"
+        onclick="closeOutside(event, 'termsModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('termsModal')">&times;</span>
+          <h2>Terms & Conditions</h2>
+          <p>Here you can display your restaurant's terms and conditions.</p>
+        </div>
+      </div>
+
+      <div
+        id="impressumModal"
+        class="modal"
+        onclick="closeOutside(event, 'impressumModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('impressumModal')"
+            >&times;</span
+          >
+          <h2>Legal Notice</h2>
+          <p>Provide your legal/ownership information here.</p>
+        </div>
+      </div>
+
+      <div
+        id="privacyModal"
+        class="modal"
+        onclick="closeOutside(event, 'privacyModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('privacyModal')"
+            >&times;</span
+          >
+          <h2>Privacy Policy</h2>
+          <p>Explain how you handle customer data here.</p>
+        </div>
+      </div>
+
+      <div
+        id="accessibilityModal"
+        class="modal"
+        onclick="closeOutside(event, 'accessibilityModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('accessibilityModal')"
+            >&times;</span
+          >
+          <h2>Accessibility</h2>
+          <p>
+            Provide information about accessibility features of your restaurant.
+          </p>
+        </div>
+      </div>
+
+      <div
+        id="confirmModal"
+        class="modal"
+        onclick="closeOutside(event, 'confirmModal')"
+      >
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('confirmModal')"
+            >&times;</span
+          >
+          <h2>✅ Your voucher order has been placed!</h2>
+          <p>Thank you for your order.</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      // ===================== Navbar Handling =====================
+      function toggleMobileMenu() {
+        const navLinks = document.querySelector('.navbar-links');
+        navLinks.classList.toggle('active');
+      }
+      // ===================== Carousel =====================
+      function moveSlide(carouselId, direction) {
+        const carousel = document.getElementById(carouselId);
+        const slides = carousel.querySelector('.slides');
+        const total = slides.children.length;
+        let index = parseInt(carousel.dataset.index || 0);
+
+        index = (index + direction + total) % total;
+        slides.style.transform = `translateX(-${index * 100}%)`;
+        carousel.dataset.index = index;
+      }
+
+      // Auto-slide all carousels
+      ['bookingCarousel', 'galleryCarousel'].forEach((id) => {
+        setInterval(() => moveSlide(id, 1), 8000);
+      });
+
+      // ===================== Dynamic Text on Image =====================
+      const textOverlay = document.querySelector('.main-text-overlay');
+      const texts = [
+        {
+          title: 'Welcome to our Restaurant!',
+          p: 'We offer delicious meals made from fresh ingredients. Our chefs bring passion and creativity to every dish.',
+        },
+        {
+          title: 'Experience Our Passion',
+          p: 'Taste the authenticity in every bite. Our menu is a journey through classic and contemporary flavors.',
+        },
+        {
+          title: 'Reserve Your Table Now',
+          p: 'Book a table for your special occasion. Enjoy a cozy and friendly atmosphere with us.',
+        },
+      ];
+      let currentTextIndex = 0;
+
+      function changeText() {
+        textOverlay.classList.remove('active');
+        setTimeout(() => {
+          currentTextIndex = (currentTextIndex + 1) % texts.length;
+          textOverlay.querySelector('h2').textContent =
+            texts[currentTextIndex].title;
+          textOverlay.querySelector('p').textContent =
+            texts[currentTextIndex].p;
+          textOverlay.classList.add('active');
+        }, 1000);
+      }
+
+      setInterval(changeText, 8000);
+
+      // ===================== Modal Handling =====================
+      function openModal(id) {
+        document.getElementById(id).style.display = 'flex';
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+      }
+
+      function closeOutside(event, id) {
+        if (event.target.classList.contains('modal')) closeModal(id);
+      }
+
+      // ESC closes any open modal
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal').forEach((modal) => {
+            modal.style.display = 'none';
+          });
+        }
+      });
+      // ===================== Modal for footer links =====================
+      document.querySelectorAll('footer .footer-links a').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const modalId = link.getAttribute('data-modal');
+          if (modalId) {
+            openModal(modalId);
+          }
+        });
+      });
+
+      // ===================== Carousel Functionality =====================
+      const carouselStates = {};
+
+      function moveSlide(carouselId, direction) {
+        const carousel = document.getElementById(carouselId);
+        if (!carousel) return;
+
+        if (!carouselStates[carouselId]) {
+          carouselStates[carouselId] = {
+            currentIndex: 0,
+            slides: carousel.querySelectorAll('.slide'),
+          };
+        }
+
+        const state = carouselStates[carouselId];
+        const totalSlides = state.slides.length;
+        state.currentIndex =
+          (state.currentIndex + direction + totalSlides) % totalSlides;
+        const offset = -state.currentIndex * 100;
+        carousel.querySelector(
+          '.slides'
+        ).style.transform = `translateX(${offset}%)`;
+      }
+
+      // Initialize all carousels
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.carousel').forEach((carousel) => {
+          const id = carousel.id;
+          carouselStates[id] = {
+            currentIndex: 0,
+            slides: carousel.querySelectorAll('.slide'),
+          };
+        });
+      });
+
+      // ===================== Dynamic Text Overlay Fade-In =====================
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.querySelector('.main-text-overlay');
+        if (overlay) {
+          setTimeout(() => {
+            overlay.classList.add('active');
+          }, 500);
+        }
+      });
+
+      // ===================== Form Submissions =====================
+      document
+        .getElementById('reserveForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+          const name = document.getElementById('resName').value;
+          const phone = document.getElementById('resPhone').value;
+          const date = document.getElementById('resDate').value;
+          const time = document.getElementById('resTime').value;
+          const people = document.getElementById('resPeople').value;
+
+          const confirmationMessage = `
+        <h3>Reservation Details</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Time:</strong> ${time}</p>
+        <p><strong>Guests:</strong> ${people}</p>
+        <p>We've received your request and will contact you shortly to confirm your booking. Thank you! 😊</p>
+    `;
+
+          document.getElementById('reserveConfirmation').innerHTML =
+            confirmationMessage;
+          document.getElementById('reserveConfirmation').style.display =
+            'block';
+          this.style.display = 'none';
+        });
+
+      document
+        .getElementById('voucherForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+          const paymentMethod = document.getElementById('paymentMethod').value;
+
+          if (paymentMethod === 'online') {
+            openModal('paymentModal');
+          } else {
+            openModal('confirmModal');
+          }
+        });
+
+      function finishPayment(method) {
+        const confirmModal = document.getElementById('confirmModal');
+        const modalContent = confirmModal.querySelector('.modal-content');
+        modalContent.innerHTML = `
+        <span class="close" onclick="closeModal('confirmModal')">×</span>
+        <h2>✅ Payment Successful!</h2>
+        <p>Thank you for your voucher order. A confirmation email has been sent. Your payment was processed via ${method}.</p>
+    `;
+        closeModal('paymentModal');
+        openModal('confirmModal');
+      }
+
+      // ===================== Review Chat Animation =====================
+      document.addEventListener('DOMContentLoaded', () => {
+        const messages = document.querySelectorAll('.reviews .message');
+        let index = 0;
+
+        function showNextMessage() {
+          // Remove "show" from all messages before showing the next round
+          if (index === 0) {
+            messages.forEach((msg) => msg.classList.remove('show'));
+          }
+
+          messages[index].classList.add('show');
+          index++;
+
+          if (index < messages.length) {
+            setTimeout(showNextMessage, 1500);
+          } else {
+            // Reset index and start over after the last message
+            index = 0;
+            setTimeout(showNextMessage, 1500);
+          }
+        }
+
+        showNextMessage();
+      });
+    </script>
+  </body>
+</html>
